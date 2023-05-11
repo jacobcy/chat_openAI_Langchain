@@ -1,3 +1,13 @@
 index.json
+config.py
 .venv
 nohup.out
+.vscode
+log
+ai-plugins
+db
+docs
+backup
+paper
+flagged
+*.pyc

@@ -1,29 +1,77 @@
-from llama_index import SimpleDirectoryReader, LangchainEmbedding, GPTListIndex,GPTSimpleVectorIndex, PromptHelper, LLMPredictor, ServiceContext
-from langchain import OpenAI
-import gradio as gr
-import sys
+# 导入环境变量
+from config import config
+config()
+
+# 目录配置
 import os
-os.chdir(r'/app')  # 文件路径
-# os.environ["OPENAI_API_KEY"] = 'sk-xxxxxxxxxxxxxxx'
-def construct_index(directory_path):
-    max_input_size = 4096
-    num_outputs = 2000
-    max_chunk_overlap = 20
-    chunk_size_limit = 600
-    prompt_helper = PromptHelper(max_input_size, num_outputs, max_chunk_overlap, chunk_size_limit=chunk_size_limit)
-    llm_predictor = LLMPredictor(llm=OpenAI(temperature=0.7, model_name="gpt-3.5-turbo", max_tokens=num_outputs))
-    documents = SimpleDirectoryReader(directory_path).load_data()
-    service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
-    index = GPTSimpleVectorIndex.from_documents(documents,service_context=service_context)
-    index.save_to_disk('index.json')
-    return index
-def chatbot(input_text):
-    index = GPTSimpleVectorIndex.load_from_disk('index.json')
-    response = index.query(input_text, response_mode="compact")
-    return response.response
-iface = gr.Interface(fn=chatbot,
-                     inputs=gr.inputs.Textbox(lines=7, label="请输入，您想从知识库中获取什么？"),
-                     outputs="text",
-                     title="AI 本地知识库ChatBot")
-index = construct_index("docs")
-iface.launch(share=True)
+folder = os.path.dirname(os.path.abspath(__file__))
+os.chdir(folder)  # 文件路径
+
+# 日志配置
+import time
+import logging
+times = int(time.time())
+log_path = os.path.join(folder, "log", f"main_{times}.log")
+print(f"Log path: {log_path}")
+
+logging.basicConfig(
+    level=logging.INFO,
+    filename=log_path,
+    filemode="w",
+    format="%(asctime)s - %(levelname)s: %(message)s",
+    encoding="utf-8")
+logging.info(f"Start running...")
+
+from chat import chatgpt
+
+# import gradio as gr
+
+if __name__ == "__main__":
+
+    chatbot = chatgpt()
+
+    # agent example
+    # tools = chatbot.get_tools("What could I do today with my kiddo?")
+    # tool_names = [t.name for t in tools]
+    # tool_text = "\n".join(tool_names)
+    # logging.info(f"tool_names: \n{tool_text}")
+
+    # 命令行提问
+    file = r"docs\Manuscript-LP98-MS-xuejing.docx"
+
+    text = """
+    when I run the code:
+    ---
+    docsearch = Pinecone.from_existing_index(
+        index_name,
+        embeddings
+        )
+    docsearch.similarity_search(input_text)
+    ---
+    error shows:
+    ---
+    text = metadata.pop(self._text_key)
+    KeyError: text
+    ---
+    How to fix it?
+    """
+    text = "Tell me about the GS-6207?"
+
+    # text = chatbot.query(text)
+    # chatbot.query_google(text)
+    # chatbot.query_local(text)
+    # chatbot.query_remote(text)
+    chatbot.query_prompt(text)
+
+    # 生成前端界面
+    # iface = gr.Interface(fn=chatbot.query_local_index,
+    #                      inputs=gr.inputs.Textbox(
+    #                         lines=7,
+    #                         label="请输入，您想从知识库中获取什么？"
+    #                         ),
+    #                      outputs="text",
+    #                      title="AI 本地知识库ChatBot"
+    #                      )
+    # iface.launch(share=True)
+
+
