@@ -2,7 +2,7 @@ import wget
 import pathlib
 from pinecone_text.sparse import BM25Encoder
 
-
+# 导入Pinecone数据库需要的bm25_encoder
 def load_bm25(path: str):
 
     # 每次下载文件

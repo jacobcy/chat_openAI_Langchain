@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # chatbot.query_google(text)
     # chatbot.query_local(text)
     # chatbot.query_remote(text)
-    chatbot.query_prompt(text)
+    chatbot.qa_prompt(text)
 
     # 生成前端界面
     # import gradio as gr

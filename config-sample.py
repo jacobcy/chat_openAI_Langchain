@@ -29,4 +29,4 @@ logging.basicConfig(
     filemode="a",
     format="%(asctime)s - %(levelname)s: %(message)s",
     encoding="utf-8")
-logging.info(f"\nStart running...")
+logging.info(f"Start running...")

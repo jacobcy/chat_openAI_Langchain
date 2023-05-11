@@ -1,5 +1,5 @@
 from config import config
-from vector import Index
+from remoteDB import Index
 
 class NLAChain:
     def __init__(self):
@@ -7,7 +7,6 @@ class NLAChain:
         self.llm = ChatOpenAI(temperature=0)
 
         self.toolkits = self.get_toolkits()
-        self.index = Index()
 
     def store_plugins(self, ai_plugins):
         from langchain.schema import Document
@@ -20,7 +19,7 @@ class NLAChain:
             )
             for plugin in ai_plugins
         ]
-        self.index.local_storage(docs, "ai-plugins")
+        Index.local_storage(docs, "ai-plugins")
 
     def get_toolkits(self):
         urls = [
@@ -48,7 +47,7 @@ class NLAChain:
 
     def get_tools(self, input_text):
         # Get documents, which contain the Plugins to use
-        res = self.index.query_local_index(input_text, "ai-plugins")
+        res = Index.query_local_index(input_text, "ai-plugins")
 
         # Get the toolkits, one for each plugin
         tool_kits = [self.toolkits[d.metadata["plugin_name"]] for d in res]
@@ -58,7 +57,7 @@ class NLAChain:
         for tk in tool_kits:
             tools.extend(tk.nla_tools)
         return tools
-    
+
 if __name__ == "__main__":
     config()
     nla = NLAChain()
