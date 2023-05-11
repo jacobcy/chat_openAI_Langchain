@@ -1,13 +1,16 @@
-# langchain-chatbot
+# chat openAI Langchain Pinecone
 
-This is a webapp to build a private AI knowledge Bot with LangChain + ChatGPT 
+This is a webapp to build a private AI knowledge Bot with  ChatGPT + LangChain + Pinecone
 
 ## how to deploy
 
 pip install -r requirements.txt
 
-python3 app.py
+cp config-sample.py config.py
 
+config ChatGPT and Pinecone keys in config.py
+
+python3 app.py
 
 ## Demo
 
