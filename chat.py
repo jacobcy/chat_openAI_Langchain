@@ -1,4 +1,5 @@
 import logging
+from config import config
 
 from langchain import PromptTemplate
 from langchain.chat_models import ChatOpenAI
@@ -37,6 +38,7 @@ class chatgpt:
 
         # 初始化 MessageHistory 对象
         self.history = ChatMessageHistory()
+        self.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
     def save_history(func):
         def wrapper(self, question):
@@ -63,6 +65,7 @@ class chatgpt:
     # 构造prompt进行提问
     @save_history
     def query_prompt(self, question):
+
         system_template = """
             Use the following context to answer the user's question.
             If you don't know the answer, say you don't, don't try to make it up. And answer in Chinese.
@@ -71,24 +74,28 @@ class chatgpt:
             -----------
             {chat_history}
             """
+        
         # 构建初始 messages 列表
         messages = [
             SystemMessagePromptTemplate.from_template(system_template),
             HumanMessagePromptTemplate.from_template("{question}")
             ]
+        
         # 初始化 prompt 对象
         prompt = ChatPromptTemplate.from_messages(messages)
+        print(prompt)
 
         qa = ConversationalRetrievalChain.from_llm(
             self.llm,
             self.index.retriever,
-            qa_prompt=prompt
+            memory=self.memory,
+            # qa_prompt=prompt
             )
-        result = qa({'question': question,
-            'chat_history': self.history.messages
+        
+        result = qa({'question': question
+            # , 'chat_history': self.history.messages
             })
         answer = result['answer']
-        print(f"answer: {answer}")
         return answer
 
     # 查询谷歌搜索,agent返回答案为字符串
@@ -153,11 +160,12 @@ class chatgpt:
         output_text = self.gen_prompt(target, input_text)
         return output_text
 
-if __name__ == "__main__":
+    
 
-    from config import config
+if __name__ == "__main__":
     config()
     chatbot = chatgpt()
+    
     # 命令行对话
     while True:
         question = input("问题(x结束):\n")

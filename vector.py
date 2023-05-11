@@ -1,4 +1,5 @@
 import logging
+from config import config
 
 from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
 
@@ -174,8 +175,6 @@ class Index:
 
 
 if __name__ == "__main__":
-    
-    from config import config
     config()
     index = Index()
 

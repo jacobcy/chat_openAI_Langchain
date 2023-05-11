@@ -1,3 +1,4 @@
+from config import config
 from vector import Index
 
 class NLAChain:
@@ -57,3 +58,8 @@ class NLAChain:
         for tk in tool_kits:
             tools.extend(tk.nla_tools)
         return tools
+    
+if __name__ == "__main__":
+    config()
+    nla = NLAChain()
+    nla.get_toolks("Translate English to Chinese.")

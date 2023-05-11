@@ -1,3 +1,5 @@
+from config import config
+
 # 初始化 pinecone
 import os
 import pinecone
@@ -35,8 +37,6 @@ def vector_store(embeddings):
     return docsearch, retriever
 
 if __name__ == "__main__":
-    
-    from config import config
     config()
     print("pinecone: ", pinecone.whoami())
 

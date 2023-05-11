@@ -1,33 +1,11 @@
+
 # 导入环境变量
 from config import config
 config()
 
-# 目录配置
-import os
-folder = os.path.dirname(os.path.abspath(__file__))
-os.chdir(folder)  # 文件路径
-
-# 日志配置
-import time
-import logging
-times = int(time.time())
-log_path = os.path.join(folder, "log", f"main_{times}.log")
-print(f"Log path: {log_path}")
-
-logging.basicConfig(
-    level=logging.INFO,
-    filename=log_path,
-    filemode="w",
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    encoding="utf-8")
-logging.info(f"Start running...")
-
-from chat import chatgpt
-
-# import gradio as gr
-
 if __name__ == "__main__":
 
+    from chat import chatgpt
     chatbot = chatgpt()
 
     # agent example
@@ -64,6 +42,7 @@ if __name__ == "__main__":
     chatbot.query_prompt(text)
 
     # 生成前端界面
+    # import gradio as gr
     # iface = gr.Interface(fn=chatbot.query_local_index,
     #                      inputs=gr.inputs.Textbox(
     #                         lines=7,

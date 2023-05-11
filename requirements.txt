@@ -1,6 +1,6 @@
 gradio
 openai
-langchain
+langchain == 0.0.165
 pinecone-client
 pinecone-text == 0.4.2
 torch == 1.13.1
