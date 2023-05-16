@@ -5,11 +5,11 @@ config()
 
 if __name__ == "__main__":
 
-    from chat import chatgpt
-    chatbot = chatgpt()
+    from chatbot import Chatbot
+    chat = Chatbot()
 
     # agent example
-    # tools = chatbot.get_tools("What could I do today with my kiddo?")
+    # tools = chat.get_tools("What could I do today with my kiddo?")
     # tool_names = [t.name for t in tools]
     # tool_text = "\n".join(tool_names)
     # logging.info(f"tool_names: \n{tool_text}")
@@ -35,15 +35,15 @@ if __name__ == "__main__":
     """
     text = "Tell me about the GS-6207?"
 
-    # text = chatbot.query(text)
-    # chatbot.query_google(text)
-    # chatbot.query_local(text)
-    # chatbot.query_remote(text)
-    chatbot.qa_prompt(text)
+    # text = chat.query(text)
+    # chat.query_google(text)
+    # chat.query_local(text)
+    # chat.query_remote(text)
+    chat.qa_prompt(text)
 
     # 生成前端界面
     # import gradio as gr
-    # iface = gr.Interface(fn=chatbot.query_local_index,
+    # iface = gr.Interface(fn=chat.query_local_index,
     #                      inputs=gr.inputs.Textbox(
     #                         lines=7,
     #                         label="请输入，您想从知识库中获取什么？"

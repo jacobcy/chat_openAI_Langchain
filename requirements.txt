@@ -10,3 +10,4 @@ unstructured
 pdf2image
 pytesseract
 pypdf
+pdfplumber

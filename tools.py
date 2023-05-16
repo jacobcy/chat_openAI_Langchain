@@ -1,5 +1,5 @@
 from config import config
-from remoteDB import Index
+from remote_db import Index
 
 class NLAChain:
     def __init__(self):
